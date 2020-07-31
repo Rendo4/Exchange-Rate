@@ -7,28 +7,31 @@ import './styles.css';
 $(document).ready(function() {
   $('#convert').click(function(event) {
     event.preventDefault();
-    const amount = $('#dollars').val();
+    const amount = $('#number').val();
     const currency = $("#money").val();
-    $("#dollas").val("");
+    $("#numbers").val("");
     $("#money").val("");
 
-    let request = new XMLHttpRequest();
+    let promise = new Promise(function(resolve, reject){
+      let request = new XMLHttpRequest();
     const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
-
-    request.onreadystatechange = function() {
+      request.onload = function() {
       if (this.status === 200) {
-        const response = JSON.parse(this.responseText);
-        getElements(response);
+        resolve(request.response);
+      } else {
+        reject(request.response);
       }
-      
-
-      request.open("GET", url), true;
+    }
+      request.open("GET", url, true);
       request.send();
-      console.log(request)
+    });
 
-      const getElements = function(response) {
-        $('.showResults').text('You would have this amount in this currency');
-      };
-    };
+    promise.then(function(response) {
+      const body = JSON.parse(response);
+      $('.showResults').text(`You would have this amount in this currency`);
+      $('.showErrors').text("");
+    }, function(error) {
+      $('.showErrors').text(`There was an error processing your request: ${error}`);
+    });
   });
 });
