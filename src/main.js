@@ -12,7 +12,7 @@ $(document).ready(function() {
     $("#numbers").val("");
     $("#money").val("");
 
-    let promise = new Promise(function(resolve, reject){
+    let promise = new Promise(function(resolve, reject) {
       let request = new XMLHttpRequest();
       const url = `https://v6.exchangerate-api.com/v6/${process.env.API_KEY}/latest/USD`;
       request.onload = function() {
@@ -28,7 +28,8 @@ $(document).ready(function() {
 
     promise.then(function(response) {
       const body = JSON.parse(response);
-      $('.showResults').text(`You would have this amount in this currency`);
+      console.log(body.conversion_rates[currency]);
+      $('.showResults').text(`You would have ${body.conversion_rates[currency] * amount} money in this country`);
       $('.showErrors').text("");
     }, function(error) {
       $('.showErrors').text(`There was an error processing your request: ${error}`);
