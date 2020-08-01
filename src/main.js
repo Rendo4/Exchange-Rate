@@ -3,6 +3,7 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
+import { money } from './exchange.js';
 
 $(document).ready(function() {
   $('#convert').click(function(event) {
@@ -28,11 +29,14 @@ $(document).ready(function() {
 
     promise.then(function(response) {
       const body = JSON.parse(response);
-      console.log(body.conversion_rates[currency]);
-      $('.showResults').text(`You would have ${body.conversion_rates[currency] * amount} money in this country`);
+      let country = 0;
+      let unit = 0;
+      money(amount, country, unit);
+      $('.showResults').text(`You would have ${body.conversion_rates[currency] * amount} ${unit} in ${country}`);
       $('.showErrors').text("");
     }, function(error) {
       $('.showErrors').text(`There was an error processing your request: ${error}`);
+      $('.showResults').text("");
     });
   });
 });
