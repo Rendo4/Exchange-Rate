@@ -3,7 +3,7 @@ import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
-import { ExchangeRate } from './exchange.js';
+import { ExchangeRate, money } from './exchange.js';
 
 $(document).ready(function() {
   $('#convert').click(function() {
@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     function getElements(response) {
       if (response) {
-        $('.showResults').text(`You would have ${response.conversion_rates[currency] * amount} unit in country`);
+        $('.showResults').text(`You would have ${response.conversion_rates[currency] * amount} currency in that country`);
         $('.showErrors').text("");
       } else {
         $('.showResults').text(`There was an error handeling your request`);
